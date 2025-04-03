@@ -1,0 +1,32 @@
+# Ignorar ambiente virtual
+astroeduca-venv/
+
+# Ignorar arquivos de cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar arquivos de banco de dados SQLite
+*.sqlite3
+*.db
+
+# Ignorar arquivos de logs e temporários
+*.log
+*.tmp
+*.bak
+
+# Ignorar arquivos do VSCode
+.vscode/
+
+# Ignorar arquivos de dependências do pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Ignorar arquivos do editor (ex: JetBrains, Sublime)
+.idea/
+*.swp
+
+# Ignorar env vars do FastAPI
+.env
+.env.*
