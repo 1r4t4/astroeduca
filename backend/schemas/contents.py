@@ -5,6 +5,7 @@ from enum import Enum
 
 class ContentType(str, Enum):
     exercise = "exercise"
+    support = "support"
     material = "material"
     video = "video"
 
@@ -30,3 +31,7 @@ class ContentResponse(ContentBase):
 
     class Config:
         from_attributes = True
+
+    # @Attribute()
+    # def tags_list(self) -> List[str]:
+    #     return self.tags.split(",")

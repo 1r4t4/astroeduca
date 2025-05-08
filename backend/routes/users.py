@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from models.user import User
 from schemas.user import UserCreate, UserResponse, UserUpdate
@@ -26,10 +27,15 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 
+# Rota de login
 @router.post("/auth/login")
-def login(email: str, password: str, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == email).first()
-    if not user or not verify_password(password, user.hashed_password):
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
+):
+    user = (
+        db.query(User).filter(User.email == form_data.username).first()
+    )  # Aqui usamos form_data.username para o email
+    if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Credenciais inválidas")
 
     token = create_jwt_token({"sub": user.email, "role": user.role})

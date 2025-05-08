@@ -19,3 +19,11 @@ class Content(Base):
 
     created_by = Column(Integer, ForeignKey("users.id"))
     creator = relationship("User")
+
+    @property
+    def tags_list(self) -> list[str]:
+        return self.tags.split(",") if self.tags else []
+
+    @tags_list.setter
+    def tags_list(self, value: list[str]) -> None:
+        self.tags = ",".join(value)
