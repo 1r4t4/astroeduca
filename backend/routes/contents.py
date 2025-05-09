@@ -21,15 +21,22 @@ def create_content(
             status_code=403, detail="Apenas professores podem criar conteúdos."
         )
 
-    new_content = Content(
-        **content_data.dict(),
-        created_by=current_user.id,
-        tags=",".join(content_data.tags),
-    )
+    data = content_data.model_dump(exclude={"tags"})
+
+    if "file_url" in data and data["file_url"] is not None:
+        data["file_url"] = str(data["file_url"])
+
+    new_content = Content(**data, created_by=current_user.id)
+    new_content.tags_list = content_data.tags
     db.add(new_content)
     db.commit()
     db.refresh(new_content)
-    return new_content
+    data_dict = {
+        c.name: getattr(new_content, c.name) for c in new_content.__table__.columns
+    }
+    data_dict["tags"] = new_content.tags_list
+    response = ContentResponse.model_validate(data_dict)
+    return response
 
 
 @router.get("/contents/", response_model=List[ContentResponse])
@@ -42,7 +49,6 @@ def get_contents(
     tag: str = None,
 ):
     query = db.query(Content)
-
     if type:
         query = query.filter(Content.type == type)
     if exam:
@@ -54,7 +60,13 @@ def get_contents(
     if tag:
         query = query.filter(Content.tags.like(f"%{tag}%"))
 
-    return query.all()
+    results = []
+    for content in query.all():
+        # monta dict e sobrescreve tags como lista
+        data = {c.name: getattr(content, c.name) for c in content.__table__.columns}
+        data["tags"] = content.tags_list
+        results.append(ContentResponse.model_validate(data))
+    return results
 
 
 @router.get("/contents/{content_id}", response_model=ContentResponse)
@@ -62,7 +74,9 @@ def get_content(content_id: int, db: Session = Depends(get_db)):
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(status_code=404, detail="Conteúdo não encontrado.")
-    return content
+    data = {c.name: getattr(content, c.name) for c in content.__table__.columns}
+    data["tags"] = content.tags_list
+    return ContentResponse.model_validate(data)
 
 
 @router.put("/contents/{content_id}", response_model=ContentResponse)
@@ -70,48 +84,50 @@ def update_content(
     content_id: int,
     content_data: ContentCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_authenticated_user),
+    current_user=Depends(get_current_authenticated_user),
 ):
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(status_code=404, detail="Conteúdo não encontrado.")
-
     if (
         current_user.role not in ["professor", "admin"]
         or content.created_by != current_user.id
     ):
-        raise HTTPException(
-            status_code=403, detail="Você não tem permissão para editar este conteúdo."
-        )
+        raise HTTPException(status_code=403, detail="Permissão negada.")
 
-    for key, value in content_data.dict().items():
-        setattr(content, key, value)
+    # atualiza todos os campos exceto tags
+    data = content_data.model_dump(exclude={"tags"})
+    if "file_url" in data and data["file_url"] is not None:
+        data["file_url"] = str(data["file_url"])
+    for key, val in data.items():
+        setattr(content, key, val)
 
-    content.tags = ",".join(content_data.tags)  # Atualizar tags
+    # usa setter para tags
+    content.tags_list = content_data.tags
 
     db.commit()
     db.refresh(content)
-    return content
+
+    # retorna com tags como lista
+    out = {c.name: getattr(content, c.name) for c in content.__table__.columns}
+    out["tags"] = content.tags_list
+    return ContentResponse.model_validate(out)
 
 
 @router.delete("/contents/{content_id}")
 def delete_content(
     content_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_authenticated_user),
+    current_user=Depends(get_current_authenticated_user),
 ):
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(status_code=404, detail="Conteúdo não encontrado.")
-
     if (
         current_user.role not in ["professor", "admin"]
         or content.created_by != current_user.id
     ):
-        raise HTTPException(
-            status_code=403, detail="Você não tem permissão para excluir este conteúdo."
-        )
-
+        raise HTTPException(status_code=403, detail="Permissão negada.")
     db.delete(content)
     db.commit()
     return {"message": "Conteúdo excluído com sucesso"}

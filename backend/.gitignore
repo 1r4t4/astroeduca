@@ -30,3 +30,7 @@ pip-delete-this-directory.txt
 # Ignorar env vars do FastAPI
 .env
 .env.*
+
+# Ignorar SQLite
+*.db
+
