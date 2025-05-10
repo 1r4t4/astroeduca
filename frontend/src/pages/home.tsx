@@ -11,6 +11,7 @@ import {
   Search,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom"; // Importando Link para navegação
 
 type Content = {
   id: number;
@@ -68,9 +69,11 @@ export default function Home() {
       {/* Menu lateral */}
       <aside className="w-64 bg-blue-950 text-white p-4 flex flex-col justify-between">
         <div>
+          <Link to="/">
           <h2 className="text-3xl font-extrabold mb-6 flex items-center gap-2">
             🌌 AstroEduca
           </h2>
+          </Link>
           <button
             className="w-full text-left px-3 py-2 hover:bg-blue-800 rounded cursor-pointer"
             onClick={() => setOpenProvas(!openProvas)}
@@ -160,9 +163,11 @@ export default function Home() {
             Buscar
           </button>
           </div>
-          <button className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800 transition flex items-center gap-2 cursor-pointer">
-            <LogIn size={18} /> Login
-          </button>
+          <Link to="/login">
+            <button className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800 transition flex items-center gap-2 cursor-pointer">
+              <LogIn size={18} /> Login
+            </button>
+          </Link>
         </div>
 
         {/* Conteúdo carregado */}
