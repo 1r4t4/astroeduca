@@ -1,8 +1,25 @@
 from fastapi import FastAPI
 from database import engine, Base
 from routes import users, contents
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:5173",  # Porta do Vite + React
+    "http://127.0.0.1:5173",  # Adicionando 127.0.0.1 também
+    # Caso tenha URLs de produção, pode adicionar aqui, por exemplo:
+    # "https://meusite.com",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Aceita essas origens específicas
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos os métodos HTTP (GET, POST, etc.)
+    allow_headers=["*"],  # Permite todos os cabeçalhos
+)
+
 
 # Criar tabelas no banco de dados
 Base.metadata.create_all(bind=engine)
