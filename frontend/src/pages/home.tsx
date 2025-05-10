@@ -3,9 +3,10 @@ import axios from "axios";
 import {
   ChevronDown,
   ChevronUp,
-  Book,
+  BookOpen,
   FileText,
   Video,
+  Brain,
   LogIn,
   Search,
 } from "lucide-react";
@@ -22,6 +23,22 @@ export default function Home() {
   const [openProvas, setOpenProvas] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [contents, setContents] = useState<Content[]>([]);
+  const [searchTag, setSearchTag] = useState("");
+
+    const getIcon = (type: string) => {
+    switch (type) {
+      case "exercise":
+        return <FileText className="text-blue-700" />;
+      case "video":
+        return <Video className="text-red-600" />;
+      case "support":
+        return <Brain className="text-yellow-600" />;
+      case "exam":
+        return <BookOpen className="text-green-600" />;
+      default:
+        return <FileText />;
+    }
+  };
 
   const fetchContents = async (type: string) => {
     try {
@@ -31,6 +48,18 @@ export default function Home() {
       setSelectedType(type);
     } catch (err) {
       console.error("Erro ao buscar conteúdos:", err);
+    }
+  };
+
+  const fetchContentsByTag = async (tag: string) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/contents/`);
+      const filtered = response.data.filter((item: any) =>
+        item.tags.includes(tag.toLowerCase())
+      );
+      setContents(filtered);
+    } catch (error) {
+      console.error("Erro ao buscar conteúdos por tag:", error);
     }
   };
 
@@ -112,12 +141,24 @@ export default function Home() {
         {/* Barra superior */}
         <div className="flex justify-between items-center mb-8">
           <div className="relative w-1/2">
-            <input
-              type="text"
-              placeholder="🔍 Buscar conteúdos..."
-              className="border border-blue-300 bg-white rounded px-4 py-2 w-1/2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <Search className="absolute right-3 top-2.5 text-blue-500" size={18} />
+          <input
+            type="text"
+            placeholder="🔍 Buscar conteúdos..."
+            value={searchTag}
+            onChange={(e) => setSearchTag(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                fetchContentsByTag(searchTag);
+                }
+            }}
+            className="border border-blue-300 bg-white rounded px-4 py-2 w-1/2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            onClick={() => fetchContentsByTag(searchTag)}
+            className="ml-2 bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800 transition"
+          >
+            Buscar
+          </button>
           </div>
           <button className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800 transition flex items-center gap-2 cursor-pointer">
             <LogIn size={18} /> Login
@@ -142,18 +183,21 @@ export default function Home() {
             <p className="text-blue-600">Nenhum conteúdo disponível.</p>
           ) : (
             <ul className="space-y-2">
-              {contents.map((item) => (
-                <li key={item.id}>
-                  <a
-                    href={item.file_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-800 hover:underline"
-                  >
-                    📘 {item.title}
-                  </a>
-                </li>
-              ))}
+            {contents.map((item) => (
+              <a
+                key={item.id}
+                href={item.file_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 border p-3 rounded hover:bg-blue-100 cursor-pointer"
+              >
+                {getIcon(item.type)}
+                <div>
+                  <div className="font-semibold">{item.title}</div>
+                  <div className="text-sm text-blue-600">{item.description}</div>
+                </div>
+              </a>
+            ))}
             </ul>
           )}
         </div>
