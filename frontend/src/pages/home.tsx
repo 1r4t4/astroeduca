@@ -84,10 +84,12 @@ export default function Home() {
       );
       setContents(filtered);
       setSelectedSubject(subject);
+      setIsHomePage(false); // Sai da home inicial
     } catch (err) {
       console.error("Erro ao buscar conteúdos por subject:", err);
     }
   };
+
 
   // ... busca por tags permanece igual
   const fetchContentsByTag = async (tag: string) => {
@@ -102,21 +104,25 @@ export default function Home() {
       setOpenExercicios(false);
       setOpenSupport(false);
       setOpenVideos(false);
+      setIsHomePage(false); // Sai da home inicial
     } catch (err) {
       console.error("Erro ao buscar conteúdos por tag:", err);
     }
   };
 
+
   return (
     <div className="flex h-screen bg-blue-50 text-blue-900">
+
       {/* Menu lateral */}
       <aside className="w-64 bg-blue-950 text-white p-4 flex flex-col justify-between">
         <div>
-          <Link to="/">
-            <h2 className="text-3xl font-extrabold mb-6 flex items-center gap-2">
-              🌌 AstroEduca
-            </h2>
-          </Link>
+          <h2
+            onClick={handleLogoClick}
+            className="text-3xl font-extrabold mb-6 flex items-center gap-2 cursor-pointer hover:text-blue-300"
+          >
+            🌌 AstroEduca
+          </h2>
 
           {/* Provas */}
           <button
@@ -167,6 +173,7 @@ export default function Home() {
           >
             Exercícios
           </button>
+
           <AnimatePresence>
             {openExercicios && (
               <motion.ul
@@ -272,31 +279,6 @@ export default function Home() {
 
       {/* Conteúdo principal */}
     <main className="flex-1 p-8 overflow-y-auto">
-      {isHomePage ? (
-        // Se estiver na "Home da Home"
-        <div className="flex flex-col items-center justify-center text-center">
-          <h1 className="text-6xl font-extrabold mb-4 flex items-center gap-4 text-blue-900">
-            🌠 Bem-vindo ao AstroEduca!
-          </h1>
-          <p className="text-xl mb-6">
-            Aqui você encontra recursos educativos sobre Astronomia para
-            aprofundar seus conhecimentos!
-          </p>
-          <img
-            src="/astro.png"
-            alt="Astronomia"
-            className="rounded-lg shadow-lg mb-6 w-1/4"
-          />
-          <button
-            onClick={goBackToHome} // Volta para a Home principal ao clicar
-            className="bg-blue-700 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-800"
-          >
-            Ir para os conteúdos
-          </button>
-        </div>
-      ) : (
-        // Se NÃO estiver na "Home da Home", mostra o conteúdo principal
-        <>
           {/* Barra superior */}
           <div className="flex justify-between items-center mb-8">
             <div className="relative w-1/2">
@@ -323,6 +305,26 @@ export default function Home() {
               </button>
             </Link>
           </div>
+
+      {isHomePage ? (
+        // Se estiver na "Home da Home"
+        <div className="flex flex-col items-center justify-center text-center">
+          <h1 className="text-6xl font-extrabold mb-4 flex items-center gap-4 text-blue-900">
+            🌠 Bem-vindo ao AstroEduca!
+          </h1>
+          <p className="text-xl mb-6">
+            Aqui você encontra recursos educativos sobre Astronomia para
+            aprofundar seus conhecimentos!
+          </p>
+          <img
+            src="/astro.png"
+            alt="Astronomia"
+            className="rounded-lg shadow-lg mb-6 w-1/4"
+          />
+        </div>
+      ) : (
+        // Se NÃO estiver na "Home da Home", mostra o conteúdo principal
+        <>
 
           {/* Conteúdo carregado */}
           <div>
