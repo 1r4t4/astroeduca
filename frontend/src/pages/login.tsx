@@ -1,6 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom"; // Importando o Link para navegação
+import { Link } from "react-router-dom";
+import api from "../api";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,34 +11,45 @@ const Login = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [name, setName] = useState("");
   const [role, setRole] = useState("professor");
+  const navigate = useNavigate();
+
 
   // Função de login
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const response = await axios.post("http://localhost:8000/auth/login", {
-        username: email,
-        password,
-      });
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-      if (response.status === 200) {
-        // Armazenar o token no localStorage ou Cookie
-        localStorage.setItem("token", response.data.access_token);
-        // Navegar para a página principal ou mudar o estado de login
-        console.log("Login realizado com sucesso!");
-      }
-    } catch (err) {
-      setError("Credenciais inválidas");
+  try {
+    const formData = new URLSearchParams();
+    formData.append("grant_type", "password"); // necessário para satisfazer o OAuth2PasswordRequestForm
+    formData.append("username", email);
+    formData.append("password", password);
+    formData.append("scope", "");
+    formData.append("client_id", "string");
+    formData.append("client_secret", "string");
+
+    const response = await api.post("/auth/login", formData, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    if (response.status === 200) {
+      localStorage.setItem("token", response.data.access_token);
+      console.log("Login realizado com sucesso!");
+      navigate("/");
     }
-  };
+  } catch (err) {
+    setError("Credenciais inválidas");
+    console.error("Erro ao logar:", err);
+  }
+};
 
   // Função de registro
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
-      const response = await axios.post("http://localhost:8000/auth/register", {
+      const response = await api.post("/auth/register", {
         email,
         name,
         role,
@@ -44,7 +57,7 @@ const Login = () => {
       });
 
       if (response.status === 201) {
-        setIsRegistering(false); // Retorna ao formulário de login
+        setIsRegistering(false);
         console.log("Conta criada com sucesso!");
       }
     } catch (err) {
@@ -54,14 +67,12 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-blue-50">
-      {/* Topo com o nome AstroEduca */}
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 text-4xl font-extrabold text-blue-700">
         <Link to="/" className="flex items-center gap-2">
           <span>🌌</span> AstroEduca
         </Link>
       </div>
 
-      {/* Caixa de login */}
       <div className="w-full max-w-sm bg-white p-8 rounded shadow-lg mt-20">
         <h2 className="text-2xl font-bold text-center mb-6">
           {isRegistering ? "Criar Conta" : "Login"}
@@ -147,7 +158,9 @@ const Login = () => {
         )}
 
         <div className="mt-4 flex justify-between text-sm text-blue-600">
-          <button onClick={() => setIsRegistering(!isRegistering)}>{isRegistering ? "Já tem uma conta? Faça login" : "Criar Conta"}</button>
+          <button onClick={() => setIsRegistering(!isRegistering)}>
+            {isRegistering ? "Já tem uma conta? Faça login" : "Criar Conta"}
+          </button>
           <button className="hover:underline">Esqueci minha senha</button>
         </div>
       </div>
