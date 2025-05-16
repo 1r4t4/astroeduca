@@ -319,7 +319,7 @@ export default function Home() {
           <img
             src="/astro.png"
             alt="Astronomia"
-            className="rounded-lg shadow-lg mb-6 w-1/4"
+            className="rounded-lg shadow-lg mb-6 max-w-[1350px]"
           />
         </div>
       ) : (
