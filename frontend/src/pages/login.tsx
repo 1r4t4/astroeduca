@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../contexts/AuthContext"; // ajuste o caminho se necessário
+
 
 
 const Login = () => {
@@ -12,6 +15,8 @@ const Login = () => {
   const [name, setName] = useState("");
   const [role, setRole] = useState("professor");
   const navigate = useNavigate();
+  const { setUser } = useAuth();
+
 
 
   // Função de login
@@ -34,8 +39,12 @@ const handleLogin = async (e: React.FormEvent) => {
     });
 
     if (response.status === 200) {
-      localStorage.setItem("token", response.data.access_token);
+      const token = response.data.access_token;
+      localStorage.setItem("token", token);
       console.log("Login realizado com sucesso!");
+      // Atualiza o usuário no contexto imediatamente
+      const decoded: any = jwtDecode(token);
+      setUser({ email: decoded.sub, role: decoded.role });
       navigate("/");
     }
   } catch (err) {
