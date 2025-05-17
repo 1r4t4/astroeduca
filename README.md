@@ -22,10 +22,10 @@
 
 ## 🧱 Tecnologias Utilizadas
 
-- **Backend:** Python 3.11 com Django ou Flask  
-- **Frontend:** HTML5, CSS3, JavaScript  
-- **Banco de Dados:** SQLite ou MySQL  
-- **UI Framework:** Bootstrap ou Tailwind CSS  
+- **Backend:** FastAPI  
+- **Frontend:** React + Vite  
+- **Banco de Dados:** SQLite / MySQL  
+- **UI Framework:** Tailwind CSS  
 
 ---
 
