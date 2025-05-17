@@ -185,12 +185,19 @@ import {
               </p>
 
               {user.role === "professor" ? (
+                      <>
                 <Link
                   to="/cadastrar"
                   className="flex items-center gap-2 bg-blue-800 px-3 py-2 rounded hover:bg-blue-700"
                 >
                   <PlusCircle size={16} /> Cadastrar Conteúdo
                 </Link>
+                <Link to="/meus-conteudos">
+                <button className="w-full text-left px-3 py-2 hover:bg-blue-800 rounded mt-2 cursor-pointer">
+                  Meus Conteúdos
+                </button>
+              </Link>
+            </>                
               ) : (
                 <p className="text-blue-400 italic">
                   Acesso somente para consulta.
