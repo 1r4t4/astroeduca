@@ -6,6 +6,8 @@ from schemas.user import UserCreate, UserResponse, UserUpdate
 from database import get_db
 from services.security import hash_password, verify_password, create_jwt_token
 from services.dependencies import get_current_authenticated_user
+from fastapi import Request
+
 
 router = APIRouter()
 
@@ -32,6 +34,9 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):
+    print("🔍 Dados recebidos no login:")
+    print(f"username (email): {form_data.username}")
+    print(f"password: {form_data.password}")
     user = (
         db.query(User).filter(User.email == form_data.username).first()
     )  # Aqui usamos form_data.username para o email
@@ -40,6 +45,15 @@ def login(
 
     token = create_jwt_token({"sub": user.email, "role": user.role})
     return {"access_token": token, "token_type": "bearer"}
+
+
+# @router.post("/auth/login")
+# async def login_debug(request: Request):
+#     form = await request.form()
+#     print("📥 Form data recebido:")
+#     for key, value in form.items():
+#         print(f"{key} = {value}")
+#     return {"message": "Debug form ok"}
 
 
 @router.get("/users/me", response_model=UserResponse)

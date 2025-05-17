@@ -1,15 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/home'; // Ajuste o caminho conforme necessário
-import Login from './pages/login'; // Sua página de login
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/home';
+import Login from './pages/login';
+import Cadastrar from './pages/cadastrar';
+import MeusConteudos from './pages/meusConteudos';
+import Editar from './pages/editar';
+
 
 function App() {
   return (
-    <Router>
+    <div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
+        <Route path="/cadastrar" element={<Cadastrar />} />
+        <Route path="/meus-conteudos" element={<MeusConteudos />} />
+        <Route path="/editar/:id" element={<Editar />} />
+        </Routes>
+    </div>
   );
 }
 

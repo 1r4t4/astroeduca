@@ -47,6 +47,7 @@ def get_contents(
     year: int = None,
     subject: str = None,
     tag: str = None,
+    created_by: int = None,  # Novo filtro adicionado
 ):
     query = db.query(Content)
     if type:
@@ -59,6 +60,8 @@ def get_contents(
         query = query.filter(Content.subject == subject)
     if tag:
         query = query.filter(Content.tags.like(f"%{tag}%"))
+    if created_by:
+        query = query.filter(Content.created_by == created_by)
 
     results = []
     for content in query.all():
