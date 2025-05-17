@@ -154,16 +154,16 @@ export default function Home() {
         {isHomePage ? (
           <div className="flex flex-col items-center justify-center text-center">
             <h1 className="text-6xl font-extrabold mb-4 flex items-center gap-4 text-blue-900">
-              🌠 Bem-vindo ao AstroEduca!
+              🌠 Olá, viajante do cosmos!
             </h1>
-            <p className="text-xl mb-6">
+            <p className="text-2xl mb-6">
               Aqui você encontra recursos educativos sobre Astronomia para
               aprofundar seus conhecimentos!
             </p>
             <img
               src="/astro.png"
               alt="Astronomia"
-              className="rounded-lg shadow-lg mb-6 max-w-[1350px]"
+              className="rounded-lg shadow-lg mb-6 max-w-[800px]"
             />
           </div>
         ) : (

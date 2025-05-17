@@ -1,11 +1,7 @@
 // src/components/Sidebar.tsx
 import {
-    BookOpen,
-    FileText,
-    Video,
-    Brain,
-    LogOut,
     PlusCircle,
+    ListOrdered
   } from "lucide-react";
   import { motion, AnimatePresence } from "framer-motion";
   import { useAuth } from "../contexts/AuthContext";
@@ -33,7 +29,7 @@ import {
     toggleMenu,
     subjects,
   }: SidebarProps) {
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
   
     return (
       <aside className="w-64 bg-blue-950 text-white p-4 flex flex-col justify-between">
@@ -192,10 +188,9 @@ import {
                 >
                   <PlusCircle size={16} /> Cadastrar Conteúdo
                 </Link>
-                <Link to="/meus-conteudos">
-                <button className="w-full text-left px-3 py-2 hover:bg-blue-800 rounded mt-2 cursor-pointer">
-                  Meus Conteúdos
-                </button>
+                <Link to="/meus-conteudos"
+                className="flex items-center gap-2 bg-blue-800 px-3 py-2 rounded hover:bg-blue-700">
+                  <ListOrdered size={16} /> Meus Conteúdos
               </Link>
             </>                
               ) : (

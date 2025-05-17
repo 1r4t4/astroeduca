@@ -43,22 +43,12 @@ export default function Cadastrar() {
         ...formData,
         tags: formData.tags.split(",").map((tag) => tag.trim().toLowerCase()),
       };
-      const response = await api.post("/contents/", payload);
-      console.log("Resposta:", response);
+      await api.post("/contents/", payload);
       alert("Conteúdo cadastrado com sucesso!");
       navigate("/");
-} catch (error: any) {
-  console.error("Erro ao cadastrar conteúdo:", error);
-
-  if (error.response) {
-    console.error("Status:", error.response.status);
-    console.error("Headers:", error.response.headers);
-    console.error("Data:", error.response.data);
-  } else {
-    console.error("Erro sem resposta:", error.message);
-  }
-
-  alert("Erro ao cadastrar conteúdo.");
+    } catch (error) {
+      console.error("Erro ao cadastrar conteúdo:", error);
+      alert("Erro ao cadastrar conteúdo.");
     } finally {
       setSubmitting(false);
     }
@@ -76,71 +66,104 @@ export default function Cadastrar() {
       <h1 className="text-2xl font-bold mb-6 text-center mt-16">Cadastrar novo conteúdo</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          placeholder="Título"
-          className="w-full p-3 border border-blue-300 rounded"
-          required
-        />
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          placeholder="Descrição"
-          className="w-full p-3 border border-blue-300 rounded"
-          required
-        />
-        <select
-          name="type"
-          value={formData.type}
-          onChange={handleChange}
-          className="w-full p-3 border border-blue-300 rounded"
-        >
-          <option value="exercise">Exercício</option>
-          <option value="support">Conteúdo de apoio</option>
-          <option value="video">Vídeo</option>
-          <option value="exam">Prova</option>
-        </select>
-        <input
-          name="exam"
-          value={formData.exam}
-          onChange={handleChange}
-          placeholder="Nome da prova (opcional)"
-          className="w-full p-3 border border-blue-300 rounded"
-        />
-        <input
-          name="year"
-          type="number"
-          value={formData.year}
-          onChange={handleChange}
-          placeholder="Ano"
-          className="w-full p-3 border border-blue-300 rounded"
-        />
-        <input
-          name="subject"
-          value={formData.subject}
-          onChange={handleChange}
-          placeholder="Assunto (subject)"
-          className="w-full p-3 border border-blue-300 rounded"
-          required
-        />
-        <input
-          name="tags"
-          value={formData.tags}
-          onChange={handleChange}
-          placeholder="Tags separadas por vírgula"
-          className="w-full p-3 border border-blue-300 rounded"
-        />
-        <input
-          name="file_url"
-          value={formData.file_url}
-          onChange={handleChange}
-          placeholder="URL do arquivo"
-          className="w-full p-3 border border-blue-300 rounded"
-          required
-        />
+        <div>
+          <label htmlFor="title" className="block mb-1 font-semibold text-blue-700">Título</label>
+          <input
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            className="w-full p-3 border border-blue-300 rounded"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="description" className="block mb-1 font-semibold text-blue-700">Descrição</label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className="w-full p-3 border border-blue-300 rounded"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="type" className="block mb-1 font-semibold text-blue-700">Tipo</label>
+          <select
+            id="type"
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+            className="w-full p-3 border border-blue-300 rounded"
+          >
+            <option value="exercise">Exercício</option>
+            <option value="support">Conteúdo de apoio</option>
+            <option value="video">Vídeo</option>
+            <option value="exam">Prova</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="exam" className="block mb-1 font-semibold text-blue-700">Nome da prova (opcional)</label>
+          <input
+            id="exam"
+            name="exam"
+            value={formData.exam}
+            onChange={handleChange}
+            className="w-full p-3 border border-blue-300 rounded"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="year" className="block mb-1 font-semibold text-blue-700">Ano</label>
+          <input
+            id="year"
+            name="year"
+            type="number"
+            value={formData.year}
+            onChange={handleChange}
+            className="w-full p-3 border border-blue-300 rounded"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="subject" className="block mb-1 font-semibold text-blue-700">Assunto (subject)</label>
+          <input
+            id="subject"
+            name="subject"
+            value={formData.subject}
+            onChange={handleChange}
+            className="w-full p-3 border border-blue-300 rounded"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="tags" className="block mb-1 font-semibold text-blue-700">Tags separadas por vírgula</label>
+          <input
+            id="tags"
+            name="tags"
+            value={formData.tags}
+            onChange={handleChange}
+            className="w-full p-3 border border-blue-300 rounded"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="file_url" className="block mb-1 font-semibold text-blue-700">URL do arquivo</label>
+          <input
+            id="file_url"
+            name="file_url"
+            value={formData.file_url}
+            onChange={handleChange}
+            className="w-full p-3 border border-blue-300 rounded"
+            required
+          />
+        </div>
+
         <button
           type="submit"
           disabled={submitting}
