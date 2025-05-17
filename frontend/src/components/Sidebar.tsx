@@ -180,15 +180,25 @@ import {
           {/* Painel de controle do usuário */}
           {user && (
             <div className="mt-6 space-y-2 text-sm">
-              <p className="text-blue-200">Olá, <strong>{user.email}</strong></p>
-              <Link
-                to="/cadastrar"
-                className="flex items-center gap-2 bg-blue-800 px-3 py-2 rounded hover:bg-blue-700"
-              >
-                <PlusCircle size={16} /> Cadastrar Conteúdo
-              </Link>
+              <p className="text-blue-200">
+                Olá, <strong>{user.email}</strong>
+              </p>
+
+              {user.role === "professor" ? (
+                <Link
+                  to="/cadastrar"
+                  className="flex items-center gap-2 bg-blue-800 px-3 py-2 rounded hover:bg-blue-700"
+                >
+                  <PlusCircle size={16} /> Cadastrar Conteúdo
+                </Link>
+              ) : (
+                <p className="text-blue-400 italic">
+                  Acesso somente para consulta.
+                </p>
+              )}
             </div>
           )}
+
         </div>
   
         <footer className="text-xs text-blue-300 mt-4">
