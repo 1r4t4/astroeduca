@@ -58,13 +58,13 @@ import {
                 transition={{ duration: 0.2 }}
               >
                 <li className="py-1 hover:underline">
-                  <a href="http://www.oba.org.br" target="_blank" rel="noopener noreferrer">OBA</a>
+                  <a href="http://www.oba.org.br/site/?p=conteudo&idcat=9&pag=conteudo&m=s" target="_blank" rel="noopener noreferrer">OBA</a>
                 </li>
                 <li className="py-1 hover:underline">
-                  <a href="https://www.fuvest.br" target="_blank" rel="noopener noreferrer">Fuvest</a>
+                  <a href="https://www.fuvest.br/acervo-vestibular" target="_blank" rel="noopener noreferrer">Fuvest</a>
                 </li>
                 <li className="py-1 hover:underline">
-                  <a href="https://www.gov.br/inep" target="_blank" rel="noopener noreferrer">ENEM</a>
+                  <a href="https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/enem/provas-e-gabaritos" target="_blank" rel="noopener noreferrer">ENEM</a>
                 </li>
               </motion.ul>
             )}
