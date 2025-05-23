@@ -8,14 +8,14 @@ class Content(Base):
     __tablename__ = "contents"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, nullable=False)
-    description = Column(String, nullable=True)
+    title = Column(String(200), nullable=False)
+    description = Column(String(500), nullable=True)
     type = Column(Enum(ContentType), nullable=False)
-    exam = Column(String, nullable=True)
+    exam = Column(String(100), nullable=True)
     year = Column(Integer, nullable=True)
-    subject = Column(String, nullable=True)
-    tags = Column(String, nullable=True)  # Armazenamos como CSV ("tag1,tag2,tag3")
-    file_url = Column(String, nullable=True)
+    subject = Column(String(100), nullable=True)
+    tags = Column(String(200), nullable=True)  # Armazenamos como CSV ("tag1,tag2,tag3")
+    file_url = Column(String(500), nullable=True)
 
     created_by = Column(Integer, ForeignKey("users.id"))
     creator = relationship("User")

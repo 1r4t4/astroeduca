@@ -8,8 +8,6 @@ app = FastAPI()
 origins = [
     "http://localhost:5173",  # Porta do Vite + React
     "http://127.0.0.1:5173",  # Adicionando 127.0.0.1 também
-    # Caso tenha URLs de produção, pode adicionar aqui, por exemplo:
-    # "https://meusite.com",
 ]
 
 app.add_middleware(
