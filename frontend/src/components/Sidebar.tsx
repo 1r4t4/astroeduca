@@ -38,9 +38,13 @@ import {
             onClick={onLogoClick}
             className="text-3xl font-extrabold mb-6 flex items-center gap-2 cursor-pointer hover:text-blue-300"
           >
-            🌌 AstroEduca
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="mb-1"
+            />
           </h2>
-  
+
           {/* Provas */}
           <button
             className="w-full text-left px-3 py-2 hover:bg-blue-800 rounded cursor-pointer"
