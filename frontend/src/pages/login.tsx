@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { useAuth } from "../contexts/AuthContext"; // ajuste o caminho se necessário
+import { useAuth } from "../contexts/AuthContext";
 
 
 
@@ -27,7 +27,7 @@ const handleLogin = async (e: React.FormEvent) => {
 
   try {
     const formData = new URLSearchParams();
-    formData.append("grant_type", "password"); // necessário para satisfazer o OAuth2PasswordRequestForm
+    formData.append("grant_type", "password"); 
     formData.append("username", email);
     formData.append("password", password);
     formData.append("scope", "");
@@ -44,7 +44,6 @@ const handleLogin = async (e: React.FormEvent) => {
       const token = response.data.access_token;
       localStorage.setItem("token", token);
       console.log("Login realizado com sucesso!");
-      // Atualiza o usuário no contexto imediatamente
       const decoded: any = jwtDecode(token);
       setUser({ email: decoded.sub, role: decoded.role });
       navigate("/");
@@ -66,7 +65,7 @@ const handleLogin = async (e: React.FormEvent) => {
         role,
         password,
       });
-      alert("Conteúdo cadastrado com sucesso!");
+      alert("Usuário cadastrado com sucesso!");
       navigate("/login");
   
       if (response.status === 201) {
@@ -82,7 +81,10 @@ const handleLogin = async (e: React.FormEvent) => {
     <div className="flex items-center justify-center h-screen bg-blue-50">
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 text-4xl font-extrabold text-blue-700">
         <Link to="/" className="flex items-center gap-2">
-          <span>🌌</span> AstroEduca
+        <img
+              src="/logo.png"
+              alt="Logo"
+            />
         </Link>
       </div>
 

@@ -14,24 +14,20 @@ class ContentBase(BaseModel):
     title: str
     description: Optional[str] = None
     type: ContentType
-    exam: Optional[str] = None  # Nome da prova (OBA, Fuvest, etc.)
+    exam: Optional[str] = None
     year: Optional[int] = None
     subject: Optional[str] = None
     tags: List[str] = []
-    file_url: Optional[HttpUrl] = None  # URL do arquivo (imagem, vídeo, etc.)
+    file_url: Optional[HttpUrl] = None
 
 
 class ContentCreate(ContentBase):
-    pass  # Mesmo esquema, pois criamos o conteúdo completo
+    pass
 
 
 class ContentResponse(ContentBase):
     id: int
-    created_by: int  # ID do professor que criou
+    created_by: int
 
     class Config:
         from_attributes = True
-
-    # @Attribute()
-    # def tags_list(self) -> List[str]:
-    #     return self.tags.split(",")

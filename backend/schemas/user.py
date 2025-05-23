@@ -15,14 +15,14 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    password: str  # Apenas para registro, não será salvo diretamente
+    password: str
 
 
 class UserResponse(UserBase):
     id: int
 
     class Config:
-        from_attributes = True  # Para compatibilidade com o banco de dados
+        from_attributes = True
 
 
 class UserUpdate(BaseModel):

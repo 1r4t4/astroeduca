@@ -14,7 +14,7 @@ class Content(Base):
     exam = Column(String(100), nullable=True)
     year = Column(Integer, nullable=True)
     subject = Column(String(100), nullable=True)
-    tags = Column(String(200), nullable=True)  # Armazenamos como CSV ("tag1,tag2,tag3")
+    tags = Column(String(200), nullable=True)
     file_url = Column(String(500), nullable=True)
 
     created_by = Column(Integer, ForeignKey("users.id"))
