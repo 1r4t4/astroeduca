@@ -64,11 +64,12 @@ export default function MeusConteudos() {
   return (
     <div className="max-w-4xl mx-auto mt-16 bg-white p-6 rounded shadow relative">
       {/* Logo centralizado */}
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-3xl font-extrabold text-blue-700">
-        <Link to="/" className="flex items-center gap-2">
-          🌌 AstroEduca
-        </Link>
-      </div>
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-3xl font-extrabold text-blue-700">
+          <Link to="/" className="flex items-center gap-2">
+          <img src="/logo.png" alt="Logo" className="h-16 max-w-none" />
+          </Link>
+        </div>
+
 
       <h1 className="text-2xl font-bold mb-6 text-center mt-16">Meus Conteúdos</h1>
 

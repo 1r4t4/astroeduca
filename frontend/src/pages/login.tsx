@@ -16,6 +16,8 @@ const Login = () => {
   const [role, setRole] = useState("professor");
   const navigate = useNavigate();
   const { setUser } = useAuth();
+  const [successMessage, setSuccessMessage] = useState("");
+
 
 
 
@@ -56,7 +58,7 @@ const handleLogin = async (e: React.FormEvent) => {
   // Função de registro
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     try {
       const response = await api.post("/auth/register", {
         email,
@@ -64,15 +66,17 @@ const handleLogin = async (e: React.FormEvent) => {
         role,
         password,
       });
-
+      alert("Conteúdo cadastrado com sucesso!");
+      navigate("/login");
+  
       if (response.status === 201) {
         setIsRegistering(false);
-        console.log("Conta criada com sucesso!");
+        console.log("Login realizado com sucesso!");
       }
     } catch (err) {
       setError("Erro ao criar a conta");
     }
-  };
+  };  
 
   return (
     <div className="flex items-center justify-center h-screen bg-blue-50">
@@ -88,6 +92,13 @@ const handleLogin = async (e: React.FormEvent) => {
         </h2>
 
         {error && <p className="text-red-600 text-sm text-center mb-4">{error}</p>}
+
+        {successMessage && (
+          <div className="success-modal">
+            {successMessage}
+            <button onClick={() => setSuccessMessage("")}>Fechar</button>
+          </div>
+        )}
 
         {isRegistering ? (
           <form onSubmit={handleRegister}>
@@ -136,7 +147,7 @@ const handleLogin = async (e: React.FormEvent) => {
                 required
               />
             </div>
-            <button type="submit" className="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800 transition">Criar Conta</button>
+            <button type="submit" className="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800 transition cursor-pointer">Criar Conta</button>
           </form>
         ) : (
           <form onSubmit={handleLogin}>
@@ -162,15 +173,15 @@ const handleLogin = async (e: React.FormEvent) => {
                 required
               />
             </div>
-            <button type="submit" className="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800 transition">Entrar</button>
+            <button type="submit" className="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800 transition cursor-pointer">Entrar</button>
           </form>
         )}
 
-        <div className="mt-4 flex justify-between text-sm text-blue-600">
-          <button onClick={() => setIsRegistering(!isRegistering)}>
+        <div className="mt-4 flex justify-between text-sm text-blue-600 cursor-pointer">
+          <button className="hover:underline cursor-pointer" onClick={() => setIsRegistering(!isRegistering)}>
             {isRegistering ? "Já tem uma conta? Faça login" : "Criar Conta"}
           </button>
-          <button className="hover:underline">Esqueci minha senha</button>
+          <button className="hover:underline cursor-pointer">Esqueci minha senha</button>
         </div>
       </div>
     </div>

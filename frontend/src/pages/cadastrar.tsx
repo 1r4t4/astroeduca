@@ -59,7 +59,10 @@ export default function Cadastrar() {
       {/* Logo centralizado */}
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-3xl font-extrabold text-blue-700">
         <Link to="/" className="flex items-center gap-2">
-          🌌 AstroEduca
+        <img
+              src="/logo.png"
+              alt="Logo"
+            />
         </Link>
       </div>
 
@@ -102,7 +105,6 @@ export default function Cadastrar() {
             <option value="exercise">Exercício</option>
             <option value="support">Conteúdo de apoio</option>
             <option value="video">Vídeo</option>
-            <option value="exam">Prova</option>
           </select>
         </div>
 
