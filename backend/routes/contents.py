@@ -47,7 +47,7 @@ def get_contents(
     year: int = None,
     subject: str = None,
     tag: str = None,
-    created_by: int = None,  # Novo filtro adicionado
+    created_by: int = None,
 ):
     query = db.query(Content)
     if type:
@@ -65,7 +65,6 @@ def get_contents(
 
     results = []
     for content in query.all():
-        # monta dict e sobrescreve tags como lista
         data = {c.name: getattr(content, c.name) for c in content.__table__.columns}
         data["tags"] = content.tags_list
         results.append(ContentResponse.model_validate(data))
@@ -98,20 +97,17 @@ def update_content(
     ):
         raise HTTPException(status_code=403, detail="Permissão negada.")
 
-    # atualiza todos os campos exceto tags
     data = content_data.model_dump(exclude={"tags"})
     if "file_url" in data and data["file_url"] is not None:
         data["file_url"] = str(data["file_url"])
     for key, val in data.items():
         setattr(content, key, val)
 
-    # usa setter para tags
     content.tags_list = content_data.tags
 
     db.commit()
     db.refresh(content)
 
-    # retorna com tags como lista
     out = {c.name: getattr(content, c.name) for c in content.__table__.columns}
     out["tags"] = content.tags_list
     return ContentResponse.model_validate(out)
